@@ -25,4 +25,5 @@ A single-terminal dashboard built with **Tailwind CSS** and **Framer Motion**, f
 4. **Access:** Open `http://localhost:5000`
 
 ---
-*Created for the "Architect" tier Upwork Portfolios.*
+📫 Contact me on LinkedIn or Upwork to discuss your Revenue Operations. LinkedIn : https://www.linkedin.com/in/enes-karaca-277655299/ 
+Upwork : https://www.upwork.com/freelancers/~0143bae00c47e48a6a
