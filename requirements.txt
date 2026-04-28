@@ -1,0 +1,16 @@
+requests
+beautifulsoup4
+pydantic
+python-dotenv
+flask
+flask-cors
+flask-socketio
+flask-sqlalchemy
+flask-login
+werkzeug
+eventlet
+openai
+plotly
+pandas
+reportlab
+gunicorn

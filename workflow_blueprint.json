@@ -1,0 +1,96 @@
+{
+  "name": "B2B Lead Intelligence & AI Scoring",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "analyze-lead",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "command": "python c:/path/to/your/project/main.py \"{{ $node[\"Webhook\"].json[\"body\"][\"company_url\"] }}\""
+      },
+      "id": "2",
+      "name": "Execute Python Script",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "chatModel": "gpt-4-turbo-preview",
+        "messages": {
+          "message": [
+            {
+              "role": "system",
+              "content": "You are a sales assistant. Review the following company analysis and write a short Slack notification summary."
+            },
+            {
+              "role": "user",
+              "content": "{{ $node[\"Execute Python Script\"].json[\"stdout\"] }}"
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "Final Review (Optional AI)",
+      "type": "n8n-nodes-base.aiAgent",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "channel": "sales-leads",
+        "text": "*New High Value Lead Found!*\n\n*Company:* {{ JSON.parse($node[\"Execute Python Script\"].json[\"stdout\"]).company_name }}\n*Score:* {{ JSON.parse($node[\"Execute Python Script\"].json[\"stdout\"]).score }}/100\n*Industry:* {{ JSON.parse($node[\"Execute Python Script\"].json[\"stdout\"]).industry }}\n\n*Pitch:* {{ JSON.parse($node[\"Execute Python Script\"].json[\"stdout\"]).suggested_pitch }}",
+        "otherOptions": {}
+      },
+      "id": "4",
+      "name": "Slack Notification",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [850, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute Python Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Python Script": {
+      "main": [
+        [
+          {
+            "node": "Final Review (Optional AI)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Review (Optional AI)": {
+      "main": [
+        [
+          {
+            "node": "Slack Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

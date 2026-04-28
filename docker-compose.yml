@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: elite_saas_web
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./instance:/app/instance
+      - elite_saas_db_volume:/app
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=sqlite:///elite_saas_v2.db
+      - SECRET_KEY=replace_this_with_a_secure_random_key_in_production
+    restart: unless-stopped
+
+volumes:
+  elite_saas_db_volume:
