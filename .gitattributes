@@ -1,0 +1,6 @@
+# Mark templates folder as vendored (ignored in language statistics)
+templates/** linguist-detectable=false
+frontend/** linguist-detectable=false
+
+# Alternatively, you can explicitly set the language for the whole repo
+# but detectable=false is usually better for specific folders.
